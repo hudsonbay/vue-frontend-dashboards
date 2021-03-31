@@ -1,0 +1,24 @@
+{
+  "name": "metaito-frontend-notes-links",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "serve": "vue-cli-service serve",
+    "build": "vue-cli-service build"
+  },
+  "dependencies": {
+    "buefy": "^0.8.6",
+    "core-js": "^3.6.5",
+    "vue": "^2.6.11",
+    "vue-perfect-scrollbar": "^0.2.0",
+    "vue-router": "^3.1.3",
+    "vuex": "^3.1.1"
+  },
+  "devDependencies": {
+    "@vue/cli-plugin-babel": "~4.5.0",
+    "@vue/cli-service": "~4.5.0",
+    "node-sass": "^4.12.0",
+    "sass-loader": "^8.0.2",
+    "vue-template-compiler": "^2.6.11"
+  }
+}
