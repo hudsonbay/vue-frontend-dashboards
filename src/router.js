@@ -1,15 +1,18 @@
 import Vue from "vue";
 import Router from "vue-router";
+import store from "./store";
 import Index from "./views/Index.vue";
 import IndexHome from "./views/sub/IndexHome.vue";
 import IndexController from "./views/sub/IndexController.vue";
 import Profile from "./views/sub/Profile.vue";
 import Notes from "./views/sub/Notes.vue";
 import Links from "./views/sub/Links.vue";
+import Signup from "./views/Signup.vue";
+import Signin from "./views/Signin.vue";
 
 Vue.use(Router);
 
-export default new Router({
+const router = new Router({
   mode: "history",
   base: process.env.BASE_URL,
   routes: [
@@ -36,6 +39,7 @@ export default new Router({
             title: "My Profile",
             showBreadcrumb: true,
             breadcrumb: [{ name: "Home", link: "/" }, { name: "My Profile" }],
+            requiresAuth: true,
           },
         },
         {
@@ -46,6 +50,7 @@ export default new Router({
             title: "Notes",
             showBreadcrumb: true,
             breadcrumb: [{ name: "Home", link: "/" }, { name: "Notes" }],
+            requiresAuth: true,
           },
         },
         {
@@ -56,17 +61,48 @@ export default new Router({
             title: "Links",
             showBreadcrumb: true,
             breadcrumb: [{ name: "Home", link: "/" }, { name: "Links" }],
+            requiresAuth: true,
           },
         },
       ],
     },
     {
       path: "/signin",
-      name: "signin",
+      name: "Signin",
+      component: Signin,
+      meta: { guest: true },
     },
     {
       path: "/signup",
-      name: "signup",
+      name: "Signup",
+      component: Signup,
+      meta: { guest: true },
     },
   ],
 });
+
+router.beforeEach((to, from, next) => {
+  if (to.matched.some((record) => record.meta.requiresAuth)) {
+    if (store.getters.isAuthenticated) {
+      next();
+      return;
+    }
+    next("/signin");
+  } else {
+    next();
+  }
+});
+
+router.beforeEach((to, from, next) => {
+  if (to.matched.some((record) => record.meta.guest)) {
+    if (store.getters.isAuthenticated) {
+      next("/notes");
+      return;
+    }
+    next();
+  } else {
+    next();
+  }
+});
+
+export default router;
