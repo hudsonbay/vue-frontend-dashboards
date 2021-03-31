@@ -1,28 +1,27 @@
 {
-  "hotlinks" : [
-    {
-      "name" : "Home",
-      "path" : "/",
-      "icon" : "home-outline",
-      "highlight" : false
+  "hotlinks": [{
+      "name": "Home",
+      "path": "/",
+      "icon": "home-outline",
+      "highlight": false
     },
     {
-      "name" : "Engage",
-      "path" : "/engage",
-      "icon" : "face",
-      "highlight" : false
+      "name": "My Profile",
+      "path": "/my-profile",
+      "icon": "face",
+      "highlight": false
     },
     {
-      "name" : "Settings",
-      "path" : "/settings",
-      "icon" : "settings-outline",
-      "highlight" : false
+      "name": "Links",
+      "path": "/links",
+      "icon": "settings-outline",
+      "highlight": false
     },
     {
-      "name" : "Messages",
-      "path" : "/messages",
-      "icon" : "message-outline",
-      "highlight" : true
+      "name": "Notes",
+      "path": "/notes",
+      "icon": "message-outline",
+      "highlight": true
     }
   ]
 }

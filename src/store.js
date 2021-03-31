@@ -1,27 +1,21 @@
-import Vue from 'vue';
-import Vuex from 'vuex';
+import Vue from "vue";
+import Vuex from "vuex";
 
-import { mainmenu } from '@/store/mainmenu.module';
-import { dashboard } from '@/store/dashboard.module';
-import { topbar } from '@/store/topbar.module';
-import { footer } from '@/store/footer.module';
+import { mainmenu } from "@/store/mainmenu.module";
+import { dashboard } from "@/store/dashboard.module";
+import { topbar } from "@/store/topbar.module";
+// import { footer } from "@/store/footer.module";
 
 Vue.use(Vuex);
 
 export default new Vuex.Store({
-  modules : {
+  modules: {
     mainmenu,
     dashboard,
     topbar,
-    footer
+    // footer,
   },
-  state : {
-
-  },
-  mutations : {
-
-  },
-  actions : {
-
-  }
+  state: {},
+  mutations: {},
+  actions: {},
 });

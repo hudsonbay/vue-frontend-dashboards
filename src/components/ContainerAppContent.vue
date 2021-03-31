@@ -3,12 +3,10 @@
   <!-- Will automatically expand to fullwidth depending on main menu status -->
 
   <div class="app-content" :class="{ 'full-width': !mainMenuIsPinned }">
-
     <!-- App Content Top Bar -->
-    <!-- Includes various hotlinks, account avatar, language, messages, ...  -->
+    <!-- Includes various hotlinks, account avatar, language, notes, ...  -->
     <!-- Can depend on current route -->
     <app-content-top-bar v-bind:mainMenuIsPinned="mainMenuIsPinned">
-
       <!-- Slot : Top Bar Hotlinks -->
       <top-bar-hotlinks
         v-bind:isDarkmode="isDarkmode"
@@ -17,14 +15,17 @@
 
       <!-- Slot : Darkmode toggle - TEMP -->
       <b-field style="margin:0">
-        <b-switch v-model="isDarkmode" :rounded="false" size="is-small"></b-switch>
+        <b-switch
+          v-model="isDarkmode"
+          :rounded="false"
+          size="is-small"
+        ></b-switch>
       </b-field>
 
       <!-- Above content will be pushed left, below content will be pushed right -->
       <div class="middle-seperator"></div>
 
       <top-bar-user v-bind:user="{}" />
-
     </app-content-top-bar>
 
     <!-- App Content Breadcrumbs -->
@@ -35,21 +36,15 @@
     <!-- Sub Router View -->
     <!-- App Content Board -->
     <app-content-board />
-
-    <!-- Footer Component -->
-    <app-content-footer v-bind:footerGroups="footerGroups" />
-
   </div>
 </template>
 
 <script>
-
 import AppContentTopBar from "@/components/AppContentTopBar";
 import TopBarHotlinks from "@/components/TopBarHotlinks";
 import TopBarUser from "@/components/TopBarUser";
 import AppContentBreadcrumbs from "@/components/AppContentBreadcrumbs";
 import AppContentBoard from "@/components/AppContentBoard";
-import AppContentFooter from "@/components/AppContentFooter";
 
 export default {
   name: "container-app-content",
@@ -59,15 +54,14 @@ export default {
     TopBarUser,
     AppContentBreadcrumbs,
     AppContentBoard,
-    AppContentFooter
   },
   props: {
-    msg: String
+    msg: String,
   },
   data() {
     return {
       //temp
-      account: {}
+      account: {},
     };
   },
   computed: {
@@ -86,9 +80,9 @@ export default {
       },
       set(newvalue) {
         this.$store.dispatch("dashboard/SET_DARK_MODE", newvalue);
-      }
-    }
-  }
+      },
+    },
+  },
 };
 </script>
 
@@ -105,6 +99,6 @@ export default {
 }
 
 .middle-seperator {
-  flex:1;
+  flex: 1;
 }
 </style>

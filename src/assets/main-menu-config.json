@@ -1,47 +1,30 @@
 {
-  "groups": [
-    {
-      "name": "",
-      "links": [
-        {
-          "name": "Dashboard",
-          "path": "/dashboard",
-          "icon": "view-list"
-        }
-      ]
+  "groups": [{
+      "name": "User Profile",
+      "links": [{
+        "name": "My profile",
+        "path": "/my-profile",
+        "icon": "face"
+      }]
     },
     {
-      "name": "Group One",
-      "links": [
-        {
-          "name": "Engage",
-          "path": "/engage",
-          "icon": "face"
-        }
-      ]
-    },
-    {
-      "name": "Group Two",
-      "links": [
-        {
-          "name": "Messages",
-          "path": "/messages",
+      "name": "Dashboard",
+      "links": [{
+          "name": "Notes",
+          "path": "/notes",
           "icon": "message-outline"
         },
         {
-          "name": "Settings",
-          "path": "/settings",
+          "name": "Links",
+          "path": "/links",
           "icon": "settings-outline"
         }
       ]
     }
   ],
-  "badges" : {
-    "Dashboard" : {
-      "text": "Neu",
-      "class": "is-success"
-    },
-    "Messages" : {
+  "badges": {
+
+    "Notes": {
       "text": "17",
       "class": "is-danger"
     }

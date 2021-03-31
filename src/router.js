@@ -3,6 +3,9 @@ import Router from "vue-router";
 import Index from "./views/Index.vue";
 import IndexHome from "./views/sub/IndexHome.vue";
 import IndexController from "./views/sub/IndexController.vue";
+import Profile from "./views/sub/Profile.vue";
+import Notes from "./views/sub/Notes.vue";
+import Links from "./views/sub/Links.vue";
 
 Vue.use(Router);
 
@@ -18,82 +21,52 @@ export default new Router({
         {
           path: "",
           component: IndexHome,
-          meta : {
-            showTitle : true,
-            title : "Home",
-            showBreadcrumb : false,
-            breadcrumb : []
-          }
+          meta: {
+            showTitle: true,
+            title: "Home",
+            showBreadcrumb: false,
+            breadcrumb: [],
+          },
         },
         {
-          path: "dashboard",
-          components: {
-            default : IndexController
+          path: "my-profile",
+          component: Profile,
+          meta: {
+            showTitle: true,
+            title: "My Profile",
+            showBreadcrumb: true,
+            breadcrumb: [{ name: "Home", link: "/" }, { name: "My Profile" }],
           },
-          meta : {
-            showTitle : true,
-            title : "Dashboard",
-            showBreadcrumb : true,
-            breadcrumb : [
-              { name : 'Home', link : "/" },
-              { name : 'Dashboard' }
-            ]
-          }
         },
         {
-          path: "engage",
-          components: {
-            default :  IndexController
+          path: "notes",
+          component: Notes,
+          meta: {
+            showTitle: true,
+            title: "Notes",
+            showBreadcrumb: true,
+            breadcrumb: [{ name: "Home", link: "/" }, { name: "Notes" }],
           },
-          meta : {
-            showTitle : true,
-            title : "Engage",
-            showBreadcrumb : true,
-            breadcrumb : [
-              { name : 'Home', link : "/" },
-              { name : 'Engange' }
-            ]
-          }
         },
         {
-          path: "messages",
-          components: {
-            default :  IndexController
+          path: "links",
+          component: Links,
+          meta: {
+            showTitle: true,
+            title: "Links",
+            showBreadcrumb: true,
+            breadcrumb: [{ name: "Home", link: "/" }, { name: "Links" }],
           },
-          meta : {
-            showTitle : true,
-            title : "Messages",
-            showBreadcrumb : true,
-            breadcrumb : [
-              { name : 'Home', link : "/" },
-              { name : 'Messages' }
-            ]
-          }
         },
-        {
-          path: "settings",
-          components: {
-            default :  IndexController
-          },
-          meta : {
-            showTitle : true,
-            title : "Settings",
-            showBreadcrumb : true,
-            breadcrumb : [
-              { name : 'Home', link : "/" },
-              { name : 'Settings' }
-            ]
-          }
-        }
-      ]
+      ],
     },
     {
       path: "/signin",
-      name: "signin"
+      name: "signin",
     },
     {
       path: "/signup",
-      name: "signup"
-    }
-  ]
+      name: "signup",
+    },
+  ],
 });

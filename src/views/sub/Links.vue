@@ -1,8 +1,7 @@
 <template>
   <div id="" class="">
     <h1>
-      This is an app for you to store your personal notes and links from the
-      internet
+      This is the links module
     </h1>
   </div>
 </template>
@@ -11,7 +10,7 @@
 // @ is an alias to /src
 
 export default {
-  name: "",
+  name: "Profile",
   components: {},
 };
 </script>
