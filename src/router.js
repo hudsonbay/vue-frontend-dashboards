@@ -3,12 +3,12 @@ import Router from "vue-router";
 import store from "./store";
 import Index from "./views/Index.vue";
 import IndexHome from "./views/sub/IndexHome.vue";
-import IndexController from "./views/sub/IndexController.vue";
 import Profile from "./views/sub/Profile.vue";
 import Notes from "./views/sub/Notes.vue";
 import Links from "./views/sub/Links.vue";
 import Signup from "./views/Signup.vue";
 import Signin from "./views/Signin.vue";
+import { isLoggedIn } from "./utils/auth";
 
 Vue.use(Router);
 
@@ -29,6 +29,7 @@ const router = new Router({
             title: "Home",
             showBreadcrumb: false,
             breadcrumb: [],
+            allowAnonymous: true,
           },
         },
         {
@@ -39,7 +40,6 @@ const router = new Router({
             title: "My Profile",
             showBreadcrumb: true,
             breadcrumb: [{ name: "Home", link: "/" }, { name: "My Profile" }],
-            requiresAuth: true,
           },
         },
         {
@@ -50,7 +50,6 @@ const router = new Router({
             title: "Notes",
             showBreadcrumb: true,
             breadcrumb: [{ name: "Home", link: "/" }, { name: "Notes" }],
-            requiresAuth: true,
           },
         },
         {
@@ -61,7 +60,6 @@ const router = new Router({
             title: "Links",
             showBreadcrumb: true,
             breadcrumb: [{ name: "Home", link: "/" }, { name: "Links" }],
-            requiresAuth: true,
           },
         },
       ],
@@ -70,36 +68,20 @@ const router = new Router({
       path: "/signin",
       name: "Signin",
       component: Signin,
-      meta: { guest: true },
+      meta: { guest: true, allowAnonymous: true },
     },
     {
       path: "/signup",
       name: "Signup",
       component: Signup,
-      meta: { guest: true },
+      meta: { guest: true, allowAnonymous: true },
     },
   ],
 });
 
 router.beforeEach((to, from, next) => {
-  if (to.matched.some((record) => record.meta.requiresAuth)) {
-    if (store.getters.isAuthenticated) {
-      next();
-      return;
-    }
+  if (!to.meta.allowAnonymous && !isLoggedIn()) {
     next("/signin");
-  } else {
-    next();
-  }
-});
-
-router.beforeEach((to, from, next) => {
-  if (to.matched.some((record) => record.meta.guest)) {
-    if (store.getters.isAuthenticated) {
-      next("/notes");
-      return;
-    }
-    next();
   } else {
     next();
   }

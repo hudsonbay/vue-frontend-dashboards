@@ -1,24 +1,39 @@
 <template>
-  <div class="login">
-    <div>
-      <form @submit.prevent="submit">
-        <div>
-          <label for="email">Email:</label>
-          <input type="text" name="email" v-model="form.email" />
-        </div>
-        <div>
-          <label for="password">Password:</label>
+  <div class="flex-container">
+    <div class="content-container">
+      <div class="form-container">
+        <form @submit.prevent="submit">
+          <h1>
+            Login
+          </h1>
+          <br />
+          <br />
+          <span class="subtitle">EMAIL:</span>
+          <br />
+          <input type="email" name="email" v-model="form.email" />
+          <br />
+          <span class="subtitle">PASSWORD:</span>
+          <br />
           <input type="password" name="password" v-model="form.password" />
-        </div>
-        <button type="submit">Submit</button>
-      </form>
-      <p v-if="showError" id="error">Email or Password is incorrect</p>
+          <br /><br />
+          <input
+            type="submit"
+            value="LOGIN"
+            v-on:click="login"
+            class="submit-btn"
+          />
+          <a v-on:click="register"> or register instead</a>
+        </form>
+        <p v-if="showError" id="error">Email or Password is incorrect</p>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
 import { mapActions } from "vuex";
+import { loginUser } from "../utils/auth";
+
 export default {
   name: "Signin",
   components: {},
@@ -33,47 +48,141 @@ export default {
   },
   methods: {
     ...mapActions(["LogIn"]),
-    async submit() {
-      const User = new FormData();
-      User.append("email", this.form.email);
-      User.append("password", this.form.password);
+
+    async login() {
       try {
-        await this.LogIn(User);
+        await loginUser(this.form.email, this.form.password);
         this.$router.push("/");
-        this.showError = false;
-      } catch (error) {
-        this.showError = true;
+      } catch (err) {
+        alert(`Error: ${err}`);
       }
+    },
+    register() {
+      this.$router.push("/signup");
     },
   },
 };
 </script>
 
 <style scoped>
+html {
+  scroll-behavior: smooth;
+  background-color: #1f1f1f;
+}
+
 * {
+  margin: 0;
+  padding: 0;
   box-sizing: border-box;
 }
-label {
-  padding: 12px 12px 12px 0;
-  display: inline-block;
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+  background: #121212; /* fallback for old browsers */
+  overflow-x: hidden;
+
+  height: 100%;
+
+  /* code to make all text unselectable */
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  -o-user-select: none;
+  user-select: none;
 }
-button[type="submit"] {
-  background-color: #4caf50;
+
+/* Disables selector ring */
+body:not(.user-is-tabbing) button:focus,
+body:not(.user-is-tabbing) input:focus,
+body:not(.user-is-tabbing) select:focus,
+body:not(.user-is-tabbing) textarea:focus {
+  outline: none;
+}
+
+/* ########################################################## */
+
+h1 {
   color: white;
-  padding: 12px 20px;
-  cursor: pointer;
-  border-radius: 30px;
+
+  font-size: 35px;
+  font-weight: 800;
 }
-button[type="submit"]:hover {
-  background-color: #45a049;
+
+.flex-container {
+  width: 100vw;
+
+  margin-top: 60px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
+
+.content-container {
+  width: 500px;
+  height: 350px;
+}
+
+.form-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  width: 500px;
+  height: 350px;
+
+  margin-top: 5px;
+  padding-top: 20px;
+
+  border-radius: 12px;
+
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+
+  background: #1f1f1f;
+  box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.199);
+}
+
+.subtitle {
+  font-size: 11px;
+
+  color: rgb(255, 255, 255);
+}
+
 input {
-  margin: 5px;
-  box-shadow: 0 0 15px 4px rgba(0, 0, 0, 0.06);
-  padding: 10px;
-  border-radius: 30px;
+  border: none;
+  border-bottom: solid rgb(143, 143, 143) 1px;
+
+  margin-bottom: 30px;
+
+  background: none;
+  color: rgba(255, 255, 255, 0.555);
+
+  height: 35px;
+  width: 300px;
 }
-#error {
-  color: red;
+
+.submit-btn {
+  cursor: pointer;
+
+  border: none;
+  border-radius: 8px;
+
+  box-shadow: 2px 2px 7px #38d39f70;
+
+  background: #38d39f;
+  color: rgba(255, 255, 255, 0.8);
+
+  width: 80px;
+
+  transition: all 1s;
+}
+
+.submit-btn:hover {
+  color: rgb(255, 255, 255);
+
+  box-shadow: none;
 }
 </style>

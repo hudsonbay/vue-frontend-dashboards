@@ -5,9 +5,9 @@
     <!-- username, and or role of user -->
     <div class="text">
       <!-- <p class="lower">Moderator</p> -->
-      <span v-if="isLoggedIn">
-        <p class="upper">{{ user.email }}email</p>
-        <a @click="logout">Logout</a>
+      <span v-if="isLoggedIn()">
+        <p class="upper">{{ email }}</p>
+        <a @click="logoutUser()">Logout</a>
       </span>
       <span v-else>
         <router-link to="/signup">Register</router-link> |
@@ -17,25 +17,34 @@
 
     <!-- avatar part would hold -->
     <!-- user profile image -->
-    <div class="avatar"></div>
+    <!-- <div class="avatar"></div> -->
   </div>
 </template>
 
 <script>
+import { isLoggedIn, logoutUser, getLoggedUserEmail } from "../utils/auth";
+
 export default {
   name: "top-bar-user",
   props: {
     user: Object,
   },
-  computed: {
-    isLoggedIn: function() {
-      return this.$store.getters.isAuthenticated;
-    },
+  data() {
+    return {
+      email: getLoggedUserEmail(),
+    };
   },
   methods: {
-    async logout() {
-      await this.$store.dispatch("LogOut");
-      this.$router.push("/signin");
+    async logoutUser() {
+      try {
+        await logoutUser();
+        this.$router.push("/signin");
+      } catch (err) {
+        alert(`Error: ${err}`);
+      }
+    },
+    isLoggedIn() {
+      return isLoggedIn();
     },
   },
 };

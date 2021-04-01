@@ -1,117 +1,190 @@
 <template>
-  <div class="notes">
-    <div v-if="User">
-      <p>Hi {{ User }}</p>
+  <div id="wrapper">
+    <div id="left">
+      <div v-if="user.notes.length == 0">
+        <h1>You have no notes :(</h1>
+        <h1>Add one and start organizing stuff</h1>
+      </div>
+      <div v-else>
+        <ul>
+          <li v-for="(item, index) in user.notes" v-bind:key="item.id">
+            <a href="#">
+              <b-button @click="deleteNote(index)" icon-right="pencil" />
+              <b-button
+                @click="deleteNote(index)"
+                type="is-danger"
+                icon-right="delete"
+              />
+              <h2>{{ item.title }}</h2>
+              <p>{{ item.text }}</p>
+            </a>
+          </li>
+        </ul>
+      </div>
     </div>
-    <div>
-      <form @submit.prevent="submit">
-        <div>
-          <label for="title">Title:</label>
-          <input type="text" name="title" v-model="form.title" />
-        </div>
-        <div>
-          <textarea
-            name="write_up"
-            v-model="form.write_up"
-            placeholder="Write up..."
-          ></textarea>
-        </div>
-        <button type="submit">Submit</button>
-      </form>
-    </div>
-    <div class="notes" v-if="Notes">
-      <ul>
-        <li v-for="note in Notes" :key="note.id">
-          <div id="note-div">
-            <p>{{ note.title }}</p>
-            <p>{{ note.text }}</p>
-          </div>
-        </li>
-      </ul>
-    </div>
-    <div v-else>
-      Oh no!!! We have no notes
+    <div id="right">
+      <b-field label="Title">
+        <b-input v-model="form.title"></b-input>
+      </b-field>
+
+      <b-field label="Text">
+        <b-input
+          maxlength="200"
+          id="text"
+          type="textarea"
+          v-model="form.text"
+        ></b-input>
+      </b-field>
+      <div>
+        <b-button type="is-success" @click="addNote">Add</b-button>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
 import { mapGetters, mapActions } from "vuex";
+import { getLoggedUserInfo } from "../../utils/auth";
+import { insertNoteOnDB, deleteNoteOnDB } from "../../actions/Notes";
 export default {
   name: "Notes",
   components: {},
   data() {
     return {
+      user: getLoggedUserInfo(),
       form: {
         title: "",
-        write_up: "",
+        text: "",
       },
     };
   },
-  created: function() {
-    // a function to call getNotes action
-    this.GetNotes();
-  },
-  computed: {
-    ...mapGetters({ Notes: "StateNotes", User: "StateUser" }),
-  },
   methods: {
-    ...mapActions(["CreateNote", "GetNotes"]),
-    async submit() {
-      try {
-        await this.CreateNote(this.form);
-      } catch (error) {
-        throw "Sorry you can't make a note now!";
-      }
+    addNote() {
+      this.user.notes.push({
+        title: this.form.title,
+        text: this.form.text,
+      });
+      insertNoteOnDB(this.user.id, this.form.title, this.form.text);
+      this.form.title = "";
+      this.form.text = "";
+    },
+    deleteNote: function(index) {
+      const note = this.user.notes[index];
+      console.log(note.id);
+      deleteNoteOnDB(note.id);
+      this.user.notes.splice(index, 1);
     },
   },
 };
 </script>
 
 <style scoped>
+#wrapper {
+  display: flex;
+}
+
+#left {
+  flex: 0 0 65%;
+}
+
+#right {
+  flex: 1;
+}
+
+body {
+  margin: 20px auto;
+  font-family: "Lato";
+  background: #666;
+  color: #fff;
+}
+
 * {
-  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
-label {
-  padding: 12px 12px 12px 0;
-  display: inline-block;
+
+h2 {
+  font-weight: bold;
+  font-size: 2rem;
 }
-button[type="submit"] {
-  background-color: #4caf50;
-  color: white;
-  padding: 12px 20px;
-  cursor: pointer;
-  border-radius: 30px;
-  margin: 10px;
+p {
+  font-family: "Reenie Beanie";
+  font-size: 2rem;
 }
-button[type="submit"]:hover {
-  background-color: #45a049;
-}
-input {
-  width: 60%;
-  margin: 15px;
-  border: 0;
-  box-shadow: 0 0 15px 4px rgba(0, 0, 0, 0.06);
-  padding: 10px;
-  border-radius: 30px;
-}
-textarea {
-  width: 75%;
-  resize: vertical;
-  padding: 15px;
-  border-radius: 15px;
-  border: 0;
-  box-shadow: 0 0 15px 4px rgba(0, 0, 0, 0.06);
-  height: 150px;
-  margin: 15px;
-}
-ul {
+ul,
+li {
   list-style: none;
 }
-#post-div {
-  border: 3px solid #000;
-  width: 500px;
-  margin: auto;
-  margin-bottom: 5px;
+ul {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
 }
+ul li a {
+  text-decoration: none;
+  color: #000;
+  background: #ffc;
+  display: block;
+  height: 10em;
+  width: 10em;
+  padding: 1em;
+  box-shadow: 5px 5px 7px rgba(33, 33, 33, 0.7);
+  transform: rotate(-6deg);
+  transition: transform 0.15s linear;
+}
+
+ul li:nth-child(even) a {
+  transform: rotate(4deg);
+  position: relative;
+  top: 5px;
+  background: #cfc;
+}
+ul li:nth-child(3n) a {
+  transform: rotate(-3deg);
+  position: relative;
+  top: -5px;
+  background: #ccf;
+}
+ul li:nth-child(5n) a {
+  transform: rotate(5deg);
+  position: relative;
+  top: -10px;
+}
+
+ul li a:hover,
+ul li a:focus {
+  box-shadow: 10px 10px 7px rgba(0, 0, 0, 0.7);
+  transform: scale(1.25);
+  position: relative;
+  z-index: 5;
+}
+
+ul li {
+  margin: 1em;
+}
+
+/* ########################################################## */
+body {
+  padding: 2em;
+}
+label {
+  display: block;
+}
+div + div {
+  margin-top: 1em;
+}
+.error-message {
+  display: none;
+  color: red;
+}
+
+/* ✨ The magic ✨ */
+/* form.errors {
+  :invalid {
+    border-color: red;
+  }
+  .error-message {
+    display: block;
+  }
+} */
 </style>
