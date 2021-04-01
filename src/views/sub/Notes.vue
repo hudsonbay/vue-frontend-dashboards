@@ -9,7 +9,7 @@
         <ul>
           <li v-for="(item, index) in user.notes" v-bind:key="item.id">
             <a href="#">
-              <b-button @click="deleteNote(index)" icon-right="pencil" />
+              <b-button @click="editNote(index)" icon-right="pencil" />
               <b-button
                 @click="deleteNote(index)"
                 type="is-danger"
@@ -51,6 +51,7 @@ export default {
   components: {},
   data() {
     return {
+      isComponentModalActive: false,
       user: getLoggedUserInfo(),
       form: {
         title: "",
@@ -73,6 +74,10 @@ export default {
       console.log(note.id);
       deleteNoteOnDB(note.id);
       this.user.notes.splice(index, 1);
+    },
+    editNote: function(index) {
+      const note = this.user.notes[index];
+      console.log(note.id);
     },
   },
 };
