@@ -20,7 +20,7 @@
                 icon-right="delete"
               />
               <h2>{{ note.title }}</h2>
-              <p>{{ note.text }}</p>
+              <h4>{{ note.text }}</h4>
             </a>
           </li>
         </ul>
@@ -160,8 +160,8 @@ ul li a {
   color: #000;
   background: #ffc;
   display: block;
-  height: 10em;
-  width: 10em;
+  height: 13em;
+  width: 13em;
   padding: 1em;
   box-shadow: 5px 5px 7px rgba(33, 33, 33, 0.7);
   transform: rotate(-6deg);
@@ -212,14 +212,4 @@ div + div {
   display: none;
   color: red;
 }
-
-/* ✨ The magic ✨ */
-/* form.errors {
-  :invalid {
-    border-color: red;
-  }
-  .error-message {
-    display: block;
-  }
-} */
 </style>

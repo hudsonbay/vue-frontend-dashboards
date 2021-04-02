@@ -21,7 +21,7 @@
                 type="is-danger"
                 icon-right="delete"
               />
-              <h3>{{ item.title }}</h3>
+              <h3><b>{{ item.title }}</b></h3>
               <h4>{{ item.url }}</h4>
             </a>
           </li>
@@ -163,8 +163,8 @@ ul li a {
   color: #000;
   background: #ffc;
   display: block;
-  height: 10em;
-  width: 10em;
+  height: 11em;
+  width: 15em;
   padding: 1em;
   box-shadow: 5px 5px 7px rgba(33, 33, 33, 0.7);
   transform: rotate(-6deg);
