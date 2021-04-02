@@ -2,7 +2,7 @@
   <div class="flex-container">
     <div class="content-container">
       <div class="form-container">
-        <form @submit.prevent="submit">
+        <form @submit.prevent="register">
           <h1>
             Register
           </h1>
@@ -51,7 +51,18 @@ export default {
     async register() {
       try {
         await registerUser(this.form.email, this.form.password);
-        this.$router.push("/signin");
+        this.$router.push("/signin").catch((err) => {
+          // Ignore the vuex err regarding  navigating to the page they are already on.
+          if (
+            err.name !== "NavigationDuplicated" &&
+            !err.message.includes(
+              "Avoided redundant navigation to current location"
+            )
+          ) {
+            // But print any other errors to the console
+            logError(err);
+          }
+        });
       } catch (error) {
         this.showError = true;
       }

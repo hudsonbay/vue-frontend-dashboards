@@ -2,7 +2,7 @@
   <div class="flex-container">
     <div class="content-container">
       <div class="form-container">
-        <form @submit.prevent="submit">
+        <form @submit.prevent="login">
           <h1>
             Login
           </h1>
@@ -52,7 +52,7 @@ export default {
     async login() {
       try {
         await loginUser(this.form.email, this.form.password);
-        this.$router.push("/");
+        this.$router.push("/").catch(() => {});
       } catch (err) {
         alert(`Error: ${err}`);
       }
