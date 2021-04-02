@@ -7,8 +7,20 @@
       </div>
       <div v-else>
         <ul>
-          <li v-for="item in user.links" v-bind:key="item.id">
-            <a href="#">
+          <li v-for="(item, index) in user.links" v-bind:key="item.id">
+
+
+              <a href="#">
+              <b-button
+                @click="populateLinkToEdit(item, index)"
+                icon-right="pencil"
+              />
+
+              <b-button
+                @click="deleteLink(index)"
+                type="is-danger"
+                icon-right="delete"
+              />
               <h3>{{ item.title }}</h3>
               <h4>{{ item.url }}</h4>
             </a>
@@ -27,9 +39,15 @@
         <b-input id="url" v-model="form.url"></b-input>
       </b-field>
 
-      <div>
-        <b-button type="is-success" @click="addLink">Add</b-button>
+      <div v-if="currentAction == `insert`">
+        <b-button type="is-success" @click="addLink">Insert</b-button>
+        <b-button type="is-info" @click="clearFields">Clear fields</b-button>
       </div>
+      <div v-if="currentAction == `edit`">
+        <b-button type="is-primary" @click="editLink">Edit</b-button>
+        <b-button type="is-info" @click="clearFields">Clear fields</b-button>
+      </div>
+    </div>
     </div>
     </div>
   </div>
@@ -40,13 +58,16 @@
 
 import { getLoggedUserInfo } from "../../utils/auth";
 
-import { insertURLOnDB } from "../../actions/Links";
+import { insertURLOnDB, editLinkOnDB,  deleteLinkOnDB } from "../../actions/Links";
 export default {
   name: "Profile",
   components: {},
   data() {
     return {
       user: getLoggedUserInfo(),
+      currentAction: "insert",
+      linkId: 0,
+      linkIndex: 0,
       form: {
         title: "",
         url: "",
@@ -62,6 +83,34 @@ export default {
       insertURLOnDB(this.user.id, this.form.title, this.form.url);
       this.form.title = "";
       this.form.url = "";
+      this.clearFields();
+    },
+    async populateLinkToEdit(link, index) {
+      this.form.title = link.title;
+      this.form.url = link.url;
+      this.linkId = link.id;
+      this.linkIndex = index;
+      this.currentAction = "edit";
+    },
+    deleteLink: function(index) {
+      const link = this.user.links[index];
+      console.log(link.id);
+      deleteLinkOnDB(link.id);
+      this.user.links.splice(index, 1);
+    },
+      editLink: function() {
+      editLinkOnDB(this.linkId, this.form.title, this.form.url);
+
+      this.user.links[this.linkIndex] = {
+        title: this.form.title,
+        url: this.form.url,
+      };
+      this.clearFields();
+    },
+    clearFields() {
+      this.form.title = "";
+      this.form.url = "";
+      this.currentAction = "insert";
     },
   },
 };

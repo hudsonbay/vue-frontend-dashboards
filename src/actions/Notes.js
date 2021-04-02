@@ -24,6 +24,27 @@ export function insertNoteOnDB(user_id, title, text) {
   });
 }
 
+export function editNoteOnDB(note_id, title, text) {
+  return new Promise(async (resolve, reject) => {
+    try {
+      let res = await axios({
+        url: `${REST_ENDPOINT}api/notes/${note_id}`,
+        method: "PUT",
+        data: {
+          note: {
+            title,
+            text,
+          },
+        },
+      });
+      resolve();
+    } catch (err) {
+      console.error("Caught an error during update:", err);
+      reject(err);
+    }
+  });
+}
+
 export function deleteNoteOnDB(note_id) {
   return new Promise(async (resolve, reject) => {
     try {
@@ -32,11 +53,6 @@ export function deleteNoteOnDB(note_id) {
         method: "DELETE",
         data: { note_id },
       });
-
-      // let res = await axios.delete(`${REST_ENDPOINT}api/notes`, {
-      //   data: {
-      //     id: note_id,
-      //   },
       resolve();
     } catch (err) {
       console.error("Caught an error during delete:", err);

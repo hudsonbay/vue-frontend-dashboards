@@ -7,16 +7,20 @@
       </div>
       <div v-else>
         <ul>
-          <li v-for="(item, index) in user.notes" v-bind:key="item.id">
+          <li v-for="(note, index) in user.notes" v-bind:key="note.id">
             <a href="#">
-              <b-button @click="editNote(index)" icon-right="pencil" />
+              <b-button
+                @click="populateNoteToEdit(note, index)"
+                icon-right="pencil"
+              />
+
               <b-button
                 @click="deleteNote(index)"
                 type="is-danger"
                 icon-right="delete"
               />
-              <h2>{{ item.title }}</h2>
-              <p>{{ item.text }}</p>
+              <h2>{{ note.title }}</h2>
+              <p>{{ note.text }}</p>
             </a>
           </li>
         </ul>
@@ -35,24 +39,34 @@
           v-model="form.text"
         ></b-input>
       </b-field>
-      <div>
-        <b-button type="is-success" @click="addNote">Add</b-button>
+      <div v-if="currentAction == `insert`">
+        <b-button type="is-success" @click="addNote">Insert</b-button>
+        <b-button type="is-info" @click="clearFields">Clear fields</b-button>
+      </div>
+      <div v-if="currentAction == `edit`">
+        <b-button type="is-primary" @click="editNote">Edit</b-button>
+        <b-button type="is-info" @click="clearFields">Clear fields</b-button>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import { mapGetters, mapActions } from "vuex";
 import { getLoggedUserInfo } from "../../utils/auth";
-import { insertNoteOnDB, deleteNoteOnDB } from "../../actions/Notes";
+import {
+  insertNoteOnDB,
+  deleteNoteOnDB,
+  editNoteOnDB,
+} from "../../actions/Notes";
 export default {
   name: "Notes",
   components: {},
   data() {
     return {
-      isComponentModalActive: false,
       user: getLoggedUserInfo(),
+      currentAction: "insert",
+      noteId: 0,
+      noteIndex: 0,
       form: {
         title: "",
         text: "",
@@ -66,8 +80,14 @@ export default {
         text: this.form.text,
       });
       insertNoteOnDB(this.user.id, this.form.title, this.form.text);
-      this.form.title = "";
-      this.form.text = "";
+      this.clearFields();
+    },
+    async populateNoteToEdit(note, index) {
+      this.form.title = note.title;
+      this.form.text = note.text;
+      this.noteId = note.id;
+      this.noteIndex = index;
+      this.currentAction = "edit";
     },
     deleteNote: function(index) {
       const note = this.user.notes[index];
@@ -75,9 +95,19 @@ export default {
       deleteNoteOnDB(note.id);
       this.user.notes.splice(index, 1);
     },
-    editNote: function(index) {
-      const note = this.user.notes[index];
-      console.log(note.id);
+    editNote: function() {
+      editNoteOnDB(this.noteId, this.form.title, this.form.text);
+
+      this.user.notes[this.noteIndex] = {
+        title: this.form.title,
+        text: this.form.text,
+      };
+      this.clearFields();
+    },
+    clearFields() {
+      this.form.title = "";
+      this.form.text = "";
+      this.currentAction = "insert";
     },
   },
 };
