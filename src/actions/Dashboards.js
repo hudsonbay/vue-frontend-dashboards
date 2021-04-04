@@ -20,8 +20,10 @@ export function insertDashboardOnDB(user_id, title) {
       store.commit("addDashboard", {
         id: res.data.data.id,
         title: title,
+        notes: [],
+        links: [],
       });
-      
+
       console.log("number of dashboards", store.state.user.dashboards.length);
       console.log(store.state.user.dashboards);
       resolve();

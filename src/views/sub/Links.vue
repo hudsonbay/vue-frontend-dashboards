@@ -1,16 +1,25 @@
 <template>
   <div id="wrapper">
     <div id="left">
-      <!-- if there is no selected dashboard -->
-      <div v-if="this.$store.getters.getSelectedDashboardID == 0">
-        <h1>Please, select a dashboard</h1>
+       <!-- If dashboards list is empty -->
+      <div v-if="this.$store.state.user.dashboards.length == 0">
+        <h1>You have no dashboards :(</h1>
+        <h1>Add one and start organizing stuff</h1>
       </div>
 
+      <!-- if there is no selected dashboard -->
+      <div v-else-if="this.$store.getters.getSelectedDashboardID == 0">
+        <h1>Please, select a dashboard or add one</h1>
+      </div>
+
+      <!-- If the selected dashboard has no notes -->
       <div
         v-else-if="this.$store.getters.getSelectedDashboard.links.length == 0"
       >
-        <h1>You have no links :(</h1>
-        <h1>Add one and start organizing stuff</h1>
+        <h1>
+          You have no links in the dashboard
+          {{ this.$store.getters.getSelectedDashboard.title }} :(
+        </h1>
       </div>
 
       <div v-else>
@@ -42,7 +51,17 @@
     </div>
     <div id="right">
       <div v-if="this.$store.getters.getSelectedDashboardID != 0">
-        <b-field label="Title">
+        <form @submit="checkForm"
+  novalidate="true">
+
+          <p v-if="errors.length">
+    <b>Please correct the following error(s):</b>
+    <ul>
+      <li v-for="error in errors" v-bind:key="error">{{ error }}</li>
+    </ul>
+  </p>
+
+          <b-field label="Title">
           <b-input id="title" v-model="form.title"></b-input>
         </b-field>
 
@@ -58,6 +77,8 @@
           <b-button type="is-primary" @click="editLink">Edit</b-button>
           <b-button type="is-info" @click="clearFields">Clear fields</b-button>
         </div>
+        </form>
+
       </div>
     </div>
   </div>
@@ -79,6 +100,7 @@ export default {
   data() {
     return {
       user: getLoggedUserInfo(),
+      errors: [],
       currentAction: "insert",
       linkId: 0,
       linkIndex: 0,
@@ -89,6 +111,35 @@ export default {
     };
   },
   methods: {
+    checkForm: function (e) {
+      if (this.form.title && this.form.url) {
+        return true;
+      }
+      this.errors = [];
+
+      if (!this.form.title) {
+        this.errors.push("Title required.");
+      }
+      if (!this.form.url) {
+        this.errors.push("URL required.");
+      } else if (!this.URL(this.form.url)) {
+        this.errors.push("Valid URL required.");
+      }
+
+      e.preventDefault();
+    },
+    validURL: function (str) {
+      var pattern = new RegExp(
+        "^(https?:\\/\\/)?" + // protocol
+          "((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|" + // domain name
+          "((\\d{1,3}\\.){3}\\d{1,3}))" + // OR ip (v4) address
+          "(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*" + // port and path
+          "(\\?[;&a-z\\d%_.~+=-]*)?" + // query string
+          "(\\#[-a-z\\d_]*)?$",
+        "i"
+      ); // fragment locator
+      return !!pattern.test(str);
+    },
     addLink() {
       this.$store.getters.getSelectedDashboard.links.push({
         title: this.form.title,
@@ -108,11 +159,11 @@ export default {
       this.linkIndex = index;
       this.currentAction = "edit";
     },
-    deleteLink: function(link, index) {
+    deleteLink: function (link, index) {
       deleteLinkOnDB(link.id);
       this.$store.getters.getSelectedDashboard.links.splice(index, 1);
     },
-    editLink: function() {
+    editLink: function () {
       editLinkOnDB(
         this.$store.getters.getSelectedDashboard.links[this.linkIndex].id,
         this.form.title,

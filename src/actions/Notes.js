@@ -1,5 +1,5 @@
 import axios from "axios";
-
+import store from "../store";
 const REST_ENDPOINT = "http://localhost:4000/";
 
 export function insertNoteOnDB(dashboard_id, title, text) {
@@ -15,6 +15,12 @@ export function insertNoteOnDB(dashboard_id, title, text) {
             text,
           },
         },
+      });
+
+      store.commit("addNote", {
+        id: res.data.data.id,
+        title: title,
+        text: text,
       });
 
       resolve();

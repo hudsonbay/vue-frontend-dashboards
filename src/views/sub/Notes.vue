@@ -1,18 +1,25 @@
 <template>
   <div id="wrapper">
     <div id="left">
-      <!-- if there is no selected dashboard -->
-      <div v-if="this.$store.getters.getSelectedDashboardID == 0">
-        <h1>Please, select a dashboard</h1>
+      <!-- If dashboards list is empty -->
+      <div v-if="this.$store.state.user.dashboards.length == 0">
+        <h1>You have no dashboards :(</h1>
+        <h1>Add one and start organizing stuff</h1>
       </div>
 
-      <!-- {{ this.$store.getters.getSelectedDashboardID }} -->
-      <!-- if notes list is empty -->
+      <!-- if there is no selected dashboard -->
+      <div v-else-if="this.$store.getters.getSelectedDashboardID == 0">
+        <h1>Please, select a dashboard or add one</h1>
+      </div>
+
+      <!-- If the selected dashboard has no notes -->
       <div
         v-else-if="this.$store.getters.getSelectedDashboard.notes.length == 0"
       >
-        <h1>You have no notes :(</h1>
-        <h1>Add one and start organizing stuff</h1>
+        <h1>
+          You have no notes in the dashboard
+          {{ this.$store.getters.getSelectedDashboard.title }} :(
+        </h1>
       </div>
 
       <!-- {{ this.$store.getters.getSelectedDashboard.notes.length }}
@@ -112,12 +119,20 @@ export default {
       this.noteIndex = index;
       this.currentAction = "edit";
     },
-    deleteNote: function(note, index) {
-      
-      deleteNoteOnDB(note.id);
+    deleteNote: function (note, index) {
+      console.log("note.id", note.id);
+      console.log(
+        "this.$store.getters.getSelectedDashboard.notes[index]",
+        this.$store.getters.getSelectedDashboard.notes[index]
+      );
+      console.log(
+        "this.$store.getters.getSelectedDashboard.notes[index].id",
+        this.$store.getters.getSelectedDashboard.notes[index].id
+      );
+      deleteNoteOnDB( this.$store.getters.getSelectedDashboard.notes[this.noteIndex].id);
       this.$store.getters.getSelectedDashboard.notes.splice(index, 1);
     },
-    editNote: function() {
+    editNote: function () {
       editNoteOnDB(
         this.$store.getters.getSelectedDashboard.notes[this.noteIndex].id,
         this.form.title,

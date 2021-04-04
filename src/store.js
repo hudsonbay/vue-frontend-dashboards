@@ -34,7 +34,30 @@ export default new Vuex.Store({
       state.user.dashboards.push(payload);
     },
     addDashboard(state, payload) {
-      state.user.dashboards.push({ id: payload.id, title: payload.title });
+      state.user.dashboards.push({
+        id: payload.id,
+        title: payload.title,
+        notes: payload.notes,
+        links: payload.links,
+      });
+    },
+    addNote(state, payload) {
+      state.user.dashboards
+        .filter((d) => d.id == state.selectedDashboardID)[0]
+        .notes.push({
+          id: payload.id,
+          text: payload.text,
+          title: payload.title,
+        });
+    },
+    addLink(state, payload) {
+      state.user.dashboards
+        .filter((d) => d.id == state.selectedDashboardID)[0]
+        .links.push({
+          id: payload.id,
+          title: payload.title,
+          url: payload.url,
+        });
     },
     setSelectedDashboard(state, payload) {
       state.selectedDashboardID = payload;

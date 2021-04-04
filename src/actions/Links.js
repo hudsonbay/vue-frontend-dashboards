@@ -1,5 +1,5 @@
 import axios from "axios";
-
+import store from "../store";
 const REST_ENDPOINT = "http://localhost:4000/";
 
 export function insertURLOnDB(dashboard_id, title, url) {
@@ -16,6 +16,13 @@ export function insertURLOnDB(dashboard_id, title, url) {
           },
         },
       });
+
+      store.commit("addLink", {
+        id: res.data.data.id,
+        title: title,
+        url: url,
+      });
+
       resolve();
     } catch (err) {
       console.error("Caught an error during insertion:", err);
