@@ -60,6 +60,11 @@ export function deleteNoteOnDB(note_id) {
         method: "DELETE",
         // data: { note_id },
       });
+
+      store.commit("deleteNote", {
+        id: note_id,
+      });
+
       resolve();
     } catch (err) {
       console.error("Caught an error during delete:", err);

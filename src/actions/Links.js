@@ -60,6 +60,11 @@ export function deleteLinkOnDB(link_id) {
         method: "DELETE",
         // data: { link_id },
       });
+
+      store.commit("deleteLink", {
+        id: link_id,
+      });
+
       resolve();
     } catch (err) {
       console.error("Caught an error during delete:", err);

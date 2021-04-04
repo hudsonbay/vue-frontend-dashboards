@@ -129,10 +129,8 @@ export default {
         "this.$store.getters.getSelectedDashboard.notes[index].id",
         this.$store.getters.getSelectedDashboard.notes[index].id
       );
-      deleteNoteOnDB(
-        this.$store.getters.getSelectedDashboard.notes[this.noteIndex].id
-      );
-      this.$store.getters.getSelectedDashboard.notes.splice(index, 1);
+      deleteNoteOnDB(note.id);
+      // this.$store.getters.getSelectedDashboard.notes.splice(index, 1);
     },
     editNote: function () {
       editNoteOnDB(

@@ -79,7 +79,6 @@ export default new Vuex.Store({
         .filter((d) => d.id == state.selectedDashboardID)[0]
         .links.splice(i, 1);
     },
-
     setSelectedDashboard(state, payload) {
       state.selectedDashboardID = payload;
     },

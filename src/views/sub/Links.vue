@@ -161,7 +161,7 @@ export default {
     },
     deleteLink: function (link, index) {
       deleteLinkOnDB(link.id);
-      this.$store.getters.getSelectedDashboard.links.splice(index, 1);
+      // this.$store.getters.getSelectedDashboard.links.splice(index, 1);
     },
     editLink: function () {
       editLinkOnDB(
