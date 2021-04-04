@@ -31,8 +31,8 @@ export function loginUser(email, password) {
 }
 
 export function logoutUser() {
-  store.commit("clearUser");
   clearAuthToken();
+  store.commit("clearUser");
 }
 
 export function setAuthToken(token) {
