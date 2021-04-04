@@ -1,22 +1,29 @@
 import axios from "axios";
+import store from "../store";
 
 const REST_ENDPOINT = "http://localhost:4000/";
 
-export function insertNoteOnDB(dashboard_id, title, text) {
+export function insertDashboardOnDB(user_id, title) {
   return new Promise(async (resolve, reject) => {
     try {
       let res = await axios({
-        url: `${REST_ENDPOINT}api/notes`,
+        url: `${REST_ENDPOINT}api/dashboards`,
         method: "POST",
         data: {
-          note: {
-            dashboard_id,
+          dashboard: {
+            user_id,
             title,
-            text,
           },
         },
       });
 
+      store.commit("addDashboard", {
+        id: res.data.data.id,
+        title: title,
+      });
+      
+      console.log("number of dashboards", store.state.user.dashboards.length);
+      console.log(store.state.user.dashboards);
       resolve();
     } catch (err) {
       console.error("Caught an error during insertion:", err);
@@ -25,16 +32,16 @@ export function insertNoteOnDB(dashboard_id, title, text) {
   });
 }
 
-export function editNoteOnDB(note_id, title, text) {
+export function editDashboardOnDB(link_id, title, url) {
   return new Promise(async (resolve, reject) => {
     try {
       let res = await axios({
-        url: `${REST_ENDPOINT}api/notes/${note_id}`,
+        url: `${REST_ENDPOINT}api/links/${link_id}`,
         method: "PUT",
         data: {
-          note: {
+          link: {
             title,
-            text,
+            url,
           },
         },
       });
@@ -46,13 +53,13 @@ export function editNoteOnDB(note_id, title, text) {
   });
 }
 
-export function deleteNoteOnDB(note_id) {
+export function deleteDashboardOnDB(link_id) {
   return new Promise(async (resolve, reject) => {
     try {
       let res = await axios({
-        url: `${REST_ENDPOINT}api/notes/${note_id}`,
+        url: `${REST_ENDPOINT}api/links`,
         method: "DELETE",
-        // data: { note_id },
+        data: { link_id },
       });
       resolve();
     } catch (err) {

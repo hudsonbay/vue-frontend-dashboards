@@ -22,6 +22,29 @@
         ></b-switch>
       </b-field>
 
+      <b-button
+        icon-left="plus-box"
+        type="is-link"
+        label="New dashboard"
+        @click="openModal"
+      />
+
+      <b-select
+        style="marginLeft:8px"
+        v-show="this.$store.state.user.dashboards.length != 0"
+        placeholder="Select a dashboard"
+        v-model="selectedDashboard"
+        @input="filterDashboard"
+      >
+        <option
+          v-for="dashboard in this.$store.state.user.dashboards"
+          :value="dashboard.id"
+          :key="dashboard.id"
+        >
+          {{ dashboard.title }}
+        </option>
+      </b-select>
+
       <!-- Above content will be pushed left, below content will be pushed right -->
       <div class="middle-seperator"></div>
 
@@ -45,10 +68,12 @@ import TopBarHotlinks from "@/components/TopBarHotlinks";
 import TopBarUser from "@/components/TopBarUser";
 import AppContentBreadcrumbs from "@/components/AppContentBreadcrumbs";
 import AppContentBoard from "@/components/AppContentBoard";
+import ModalNewDashboard from "./ModalNewDashboard";
 
 export default {
   name: "container-app-content",
   components: {
+    ModalNewDashboard,
     AppContentTopBar,
     TopBarHotlinks,
     TopBarUser,
@@ -60,9 +85,23 @@ export default {
   },
   data() {
     return {
-      //temp
+      user: this.$store.state.user,
       account: {},
+      dashboardName: "",
+      isActive: true,
+      selectedDashboard: 0,
     };
+  },
+  methods: {
+    openModal() {
+      this.$buefy.modal.open({
+        parent: this,
+        component: ModalNewDashboard,
+        hasModalCard: true,
+        customClass: "custom-class",
+        trapFocus: true,
+      });
+    },
   },
   computed: {
     mainMenuIsPinned() {
@@ -74,6 +113,9 @@ export default {
     footerGroups() {
       return this.$store.state.footer.groups;
     },
+    getLoggedUserDashboards() {
+      return this.user.dashboards.map((d) => d.title);
+    },
     isDarkmode: {
       get() {
         return this.$store.state.dashboard.isDarkmode;
@@ -81,6 +123,18 @@ export default {
       set(newvalue) {
         this.$store.dispatch("dashboard/SET_DARK_MODE", newvalue);
       },
+    },
+    filterDashboard() {
+      console.log("selected dashboard id: ", this.selectedDashboard);
+      this.$store.commit("setSelectedDashboard", this.selectedDashboard);
+      console.log(
+        "this.$store.getters.getSelectedDashboardID",
+        this.$store.getters.getSelectedDashboardID
+      );
+      console.log(
+        "this.$store.getters.getSelectedDashboard",
+        this.$store.getters.getSelectedDashboard
+      );
     },
   },
 };

@@ -1,54 +1,64 @@
 <template>
   <div id="wrapper">
     <div id="left">
-      <div v-if="user.links.length == 0">
+      <!-- if there is no selected dashboard -->
+      <div v-if="this.$store.getters.getSelectedDashboardID == 0">
+        <h1>Please, select a dashboard</h1>
+      </div>
+
+      <div
+        v-else-if="this.$store.getters.getSelectedDashboard.links.length == 0"
+      >
         <h1>You have no links :(</h1>
         <h1>Add one and start organizing stuff</h1>
       </div>
+
       <div v-else>
         <ul>
-          <li v-for="(item, index) in user.links" v-bind:key="item.id">
-
-
-              <a href="#">
+          <li
+            v-for="(item, index) in this.$store.getters.getSelectedDashboard
+              .links"
+            v-bind:key="item.id"
+          >
+            <a href="#">
               <b-button
                 @click="populateLinkToEdit(item, index)"
                 icon-right="pencil"
               />
 
               <b-button
-                @click="deleteLink(index)"
+                @click="deleteLink(item, index)"
                 type="is-danger"
                 icon-right="delete"
               />
-              <h3><b>{{ item.title }}</b></h3>
+              <h3>
+                <b>{{ item.title }}</b>
+              </h3>
               <h4>{{ item.url }}</h4>
             </a>
           </li>
         </ul>
       </div>
-
     </div>
     <div id="right">
+      <div v-if="this.$store.getters.getSelectedDashboardID != 0">
+        <b-field label="Title">
+          <b-input id="title" v-model="form.title"></b-input>
+        </b-field>
 
-       <b-field label="Title">
-        <b-input id="title" v-model="form.title"></b-input>
-      </b-field>
+        <b-field label="URL">
+          <b-input id="url" v-model="form.url"></b-input>
+        </b-field>
 
-       <b-field label="URL">
-        <b-input id="url" v-model="form.url"></b-input>
-      </b-field>
-
-      <div v-if="currentAction == `insert`">
-        <b-button type="is-success" @click="addLink">Insert</b-button>
-        <b-button type="is-info" @click="clearFields">Clear fields</b-button>
+        <div v-if="currentAction == `insert`">
+          <b-button type="is-success" @click="addLink">Insert</b-button>
+          <b-button type="is-info" @click="clearFields">Clear fields</b-button>
+        </div>
+        <div v-if="currentAction == `edit`">
+          <b-button type="is-primary" @click="editLink">Edit</b-button>
+          <b-button type="is-info" @click="clearFields">Clear fields</b-button>
+        </div>
       </div>
-      <div v-if="currentAction == `edit`">
-        <b-button type="is-primary" @click="editLink">Edit</b-button>
-        <b-button type="is-info" @click="clearFields">Clear fields</b-button>
-      </div>
-    </div>
-    </div>
     </div>
   </div>
 </template>
@@ -58,7 +68,11 @@
 
 import { getLoggedUserInfo } from "../../utils/auth";
 
-import { insertURLOnDB, editLinkOnDB,  deleteLinkOnDB } from "../../actions/Links";
+import {
+  insertURLOnDB,
+  editLinkOnDB,
+  deleteLinkOnDB,
+} from "../../actions/Links";
 export default {
   name: "Profile",
   components: {},
@@ -76,13 +90,15 @@ export default {
   },
   methods: {
     addLink() {
-      this.user.links.push({
+      this.$store.getters.getSelectedDashboard.links.push({
         title: this.form.title,
         url: this.form.url,
       });
-      insertURLOnDB(this.user.id, this.form.title, this.form.url);
-      this.form.title = "";
-      this.form.url = "";
+      insertURLOnDB(
+        this.$store.getters.getSelectedDashboardID,
+        this.form.title,
+        this.form.url
+      );
       this.clearFields();
     },
     async populateLinkToEdit(link, index) {
@@ -92,16 +108,18 @@ export default {
       this.linkIndex = index;
       this.currentAction = "edit";
     },
-    deleteLink: function(index) {
-      const link = this.user.links[index];
-      console.log(link.id);
+    deleteLink: function(link, index) {
       deleteLinkOnDB(link.id);
-      this.user.links.splice(index, 1);
+      this.$store.getters.getSelectedDashboard.links.splice(index, 1);
     },
-      editLink: function() {
-      editLinkOnDB(this.linkId, this.form.title, this.form.url);
+    editLink: function() {
+      editLinkOnDB(
+        this.$store.getters.getSelectedDashboard.links[this.linkIndex].id,
+        this.form.title,
+        this.form.url
+      );
 
-      this.user.links[this.linkIndex] = {
+      this.$store.getters.getSelectedDashboard.links[this.linkIndex] = {
         title: this.form.title,
         url: this.form.url,
       };
@@ -201,7 +219,6 @@ ul li {
   margin: 1em;
 }
 
-
 /* ########################################################## */
 body {
   padding: 2em;
@@ -226,5 +243,4 @@ div + div {
     display: block;
   }
 } */
-
 </style>

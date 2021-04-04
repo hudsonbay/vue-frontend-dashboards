@@ -1,18 +1,16 @@
 <template>
   <div class="wrapper">
     <div class="profile-card__cnt js-profile-cnt">
-      <div class="profile-card__name">{{ user.email }}</div>
+      <div class="profile-card__name">{{ this.$store.state.user.email }}</div>
       <div class="profile-card__txt">
         Right now you are <strong>the logged user</strong>
       </div>
       <div class="profile-card-inf">
         <div class="profile-card-inf__item">
-          <div class="profile-card-inf__title">{{ user.notes.length }}</div>
-          <div class="profile-card-inf__txt">Notes</div>
-        </div>
-        <div class="profile-card-inf__item">
-          <div class="profile-card-inf__title">{{ user.links.length }}</div>
-          <div class="profile-card-inf__txt">Links</div>
+          <div class="profile-card-inf__title">
+            {{ this.$store.state.user.dashboards.length }}
+          </div>
+          <div class="profile-card-inf__txt">Dashboards</div>
         </div>
       </div>
     </div>
@@ -21,16 +19,10 @@
 
 <script>
 // @ is an alias to /src
-import { getLoggedUserInfo } from "../../utils/auth";
 
 export default {
   name: "Profile",
   components: {},
-  data() {
-    return {
-      user: getLoggedUserInfo(),
-    };
-  },
 };
 </script>
 

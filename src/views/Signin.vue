@@ -8,20 +8,26 @@
           </h1>
           <br />
           <br />
-          <span class="subtitle">EMAIL:</span>
-          <br />
-          <input type="email" name="email" v-model="form.email" />
-          <br />
-          <span class="subtitle">PASSWORD:</span>
-          <br />
-          <input type="password" name="password" v-model="form.password" />
-          <br /><br />
-          <input
-            type="submit"
+          <b-field label="Email">
+            <b-input type="email" name="email" v-model="form.email"></b-input>
+          </b-field>
+
+          <b-field label="Password">
+            <b-input
+              type="password"
+              name="password"
+              v-model="form.password"
+            ></b-input>
+          </b-field>
+
+          <b-button
             value="LOGIN"
             v-on:click="login"
             class="submit-btn"
-          />
+            type="is-success"
+            >Login</b-button
+          >
+
           <a v-on:click="register"> or register instead</a>
         </form>
         <p v-if="showError" id="error">Email or Password is incorrect</p>
@@ -31,7 +37,7 @@
 </template>
 
 <script>
-import { mapActions } from "vuex";
+// import { mapActions } from "vuex";
 import { loginUser } from "../utils/auth";
 
 export default {
@@ -47,7 +53,7 @@ export default {
     };
   },
   methods: {
-    ...mapActions(["LogIn"]),
+    // ...mapActions(["LogIn"]),
 
     async login() {
       try {
@@ -111,9 +117,7 @@ h1 {
 
 .flex-container {
   width: 100vw;
-
   margin-top: 60px;
-
   display: flex;
   justify-content: center;
   align-items: center;
@@ -149,19 +153,6 @@ h1 {
   font-size: 11px;
 
   color: rgb(255, 255, 255);
-}
-
-input {
-  border: none;
-  border-bottom: solid rgb(143, 143, 143) 1px;
-
-  margin-bottom: 30px;
-
-  background: none;
-  color: rgba(255, 255, 255, 0.555);
-
-  height: 35px;
-  width: 300px;
 }
 
 .submit-btn {

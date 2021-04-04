@@ -2,7 +2,7 @@ import axios from "axios";
 
 const REST_ENDPOINT = "http://localhost:4000/";
 
-export function insertURLOnDB(user_id, title, url) {
+export function insertURLOnDB(dashboard_id, title, url) {
   return new Promise(async (resolve, reject) => {
     try {
       let res = await axios({
@@ -10,7 +10,7 @@ export function insertURLOnDB(user_id, title, url) {
         method: "POST",
         data: {
           link: {
-            user_id,
+            dashboard_id,
             title,
             url,
           },
@@ -49,9 +49,9 @@ export function deleteLinkOnDB(link_id) {
   return new Promise(async (resolve, reject) => {
     try {
       let res = await axios({
-        url: `${REST_ENDPOINT}api/links`,
+        url: `${REST_ENDPOINT}api/links/${link_id}`,
         method: "DELETE",
-        data: { link_id },
+        // data: { link_id },
       });
       resolve();
     } catch (err) {

@@ -4,6 +4,7 @@
       This is an app for you to store your personal notes and links from the
       internet
     </h1>
+    Create your first dashboard here
   </div>
 </template>
 

@@ -6,6 +6,8 @@ const AUTH_TOKEN_KEY = "authToken";
 const USER_EMAIL = "USER_EMAIL";
 const USER_INFO = "USER_INFO";
 
+import store from "../store";
+
 export function loginUser(email, password) {
   return new Promise(async (resolve, reject) => {
     try {
@@ -19,8 +21,7 @@ export function loginUser(email, password) {
       });
 
       setAuthToken(res.data.data.token);
-      storeUserEmail(res.data.data.email);
-      fetchLoggedUserInfo(res.data.data.id);
+      await fetchLoggedUserInfo(res.data.data.id);
       resolve();
     } catch (err) {
       console.error("Caught an error during login:", err);
@@ -30,6 +31,7 @@ export function loginUser(email, password) {
 }
 
 export function logoutUser() {
+  store.commit("clearUser");
   clearAuthToken();
 }
 
@@ -51,7 +53,7 @@ export function getLoggedUserEmail() {
 }
 
 export function getLoggedUserInfo() {
-  return JSON.parse(localStorage.getItem(USER_INFO));
+  return store.state.user;
 }
 
 export function fetchLoggedUserInfo(id) {
@@ -74,7 +76,10 @@ export function fetchLoggedUserInfo(id) {
 }
 
 export function storeUserInfo(data) {
-  localStorage.setItem(USER_INFO, JSON.stringify(data));
+  // localStorage.setItem(USER_INFO, JSON.stringify(data));
+
+  //add all the dashboards to global state
+  store.commit("storeUserInfo", data);
 }
 
 export function clearAuthToken() {

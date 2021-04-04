@@ -1,24 +1,21 @@
 <template>
   <!-- Hotlink component to insert into top bar slot -->
   <div class="top-bar-hotlinks">
-
     <!-- Buefy Tooltip Wrapper for Icon Buttons -->
     <b-tooltip
       :label="button.name"
       :type="isDarkmode ? 'is-light' : 'is-dark'"
       :key="'hotlink-' + index"
       position="is-bottom"
-      v-for="(button, index) in hotlinks">
-
+      v-for="(button, index) in hotlinks"
+    >
       <!-- Icon Button -->
       <router-link :to="button.path">
         <div class="button-icon" :class="{ 'is-highlight': button.highlight }">
           <b-icon :icon="button.icon"></b-icon>
         </div>
       </router-link>
-
     </b-tooltip>
-
   </div>
 </template>
 
@@ -27,8 +24,8 @@ export default {
   name: "top-bar-hotlinks",
   props: {
     hotlinks: Array,
-    isDarkmode: Boolean
-  }
+    isDarkmode: Boolean,
+  },
 };
 </script>
 

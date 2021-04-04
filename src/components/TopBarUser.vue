@@ -6,7 +6,7 @@
     <div class="text">
       <!-- <p class="lower">Moderator</p> -->
       <span v-if="isLoggedIn()">
-        <p class="upper">{{ email }}</p>
+        <p class="upper">{{ this.$store.state.user.email }}</p>
         <a @click="logoutUser()">Logout</a>
       </span>
       <span v-else>
@@ -22,17 +22,12 @@
 </template>
 
 <script>
-import { isLoggedIn, logoutUser, getLoggedUserEmail } from "../utils/auth";
+import { isLoggedIn, logoutUser } from "../utils/auth";
 
 export default {
   name: "top-bar-user",
   props: {
     user: Object,
-  },
-  data() {
-    return {
-      email: getLoggedUserEmail(),
-    };
   },
   methods: {
     async logoutUser() {

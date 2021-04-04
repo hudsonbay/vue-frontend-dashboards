@@ -1,13 +1,29 @@
 <template>
   <div id="wrapper">
     <div id="left">
-      <div v-if="user.notes.length == 0">
+      <!-- if there is no selected dashboard -->
+      <div v-if="this.$store.getters.getSelectedDashboardID == 0">
+        <h1>Please, select a dashboard</h1>
+      </div>
+
+      <!-- {{ this.$store.getters.getSelectedDashboardID }} -->
+      <!-- if notes list is empty -->
+      <div
+        v-else-if="this.$store.getters.getSelectedDashboard.notes.length == 0"
+      >
         <h1>You have no notes :(</h1>
         <h1>Add one and start organizing stuff</h1>
       </div>
+
+      <!-- {{ this.$store.getters.getSelectedDashboard.notes.length }}
+      {{ JSON.stringify(this.$store.getters.getSelectedDashboard.notes) }} -->
       <div v-else>
         <ul>
-          <li v-for="(note, index) in user.notes" v-bind:key="note.id">
+          <li
+            v-for="(note, index) in this.$store.getters.getSelectedDashboard
+              .notes"
+            v-bind:key="note.id"
+          >
             <a href="#">
               <b-button
                 @click="populateNoteToEdit(note, index)"
@@ -15,7 +31,7 @@
               />
 
               <b-button
-                @click="deleteNote(index)"
+                @click="deleteNote(note, index)"
                 type="is-danger"
                 icon-right="delete"
               />
@@ -27,25 +43,27 @@
       </div>
     </div>
     <div id="right">
-      <b-field label="Title">
-        <b-input v-model="form.title"></b-input>
-      </b-field>
+      <div v-if="this.$store.getters.getSelectedDashboardID != 0">
+        <b-field label="Title">
+          <b-input v-model="form.title"></b-input>
+        </b-field>
 
-      <b-field label="Text">
-        <b-input
-          maxlength="200"
-          id="text"
-          type="textarea"
-          v-model="form.text"
-        ></b-input>
-      </b-field>
-      <div v-if="currentAction == `insert`">
-        <b-button type="is-success" @click="addNote">Insert</b-button>
-        <b-button type="is-info" @click="clearFields">Clear fields</b-button>
-      </div>
-      <div v-if="currentAction == `edit`">
-        <b-button type="is-primary" @click="editNote">Edit</b-button>
-        <b-button type="is-info" @click="clearFields">Clear fields</b-button>
+        <b-field label="Text">
+          <b-input
+            maxlength="200"
+            id="text"
+            type="textarea"
+            v-model="form.text"
+          ></b-input>
+        </b-field>
+        <div v-if="currentAction == `insert`">
+          <b-button type="is-success" @click="addNote">Insert</b-button>
+          <b-button type="is-info" @click="clearFields">Clear fields</b-button>
+        </div>
+        <div v-if="currentAction == `edit`">
+          <b-button type="is-primary" @click="editNote">Edit</b-button>
+          <b-button type="is-info" @click="clearFields">Clear fields</b-button>
+        </div>
       </div>
     </div>
   </div>
@@ -65,6 +83,7 @@ export default {
     return {
       user: getLoggedUserInfo(),
       currentAction: "insert",
+      dashboard: this.$store.getters.getSelectedDashboard,
       noteId: 0,
       noteIndex: 0,
       form: {
@@ -75,11 +94,15 @@ export default {
   },
   methods: {
     addNote() {
-      this.user.notes.push({
+      this.$store.getters.getSelectedDashboard.notes.push({
         title: this.form.title,
         text: this.form.text,
       });
-      insertNoteOnDB(this.user.id, this.form.title, this.form.text);
+      insertNoteOnDB(
+        this.$store.getters.getSelectedDashboardID,
+        this.form.title,
+        this.form.text
+      );
       this.clearFields();
     },
     async populateNoteToEdit(note, index) {
@@ -89,16 +112,19 @@ export default {
       this.noteIndex = index;
       this.currentAction = "edit";
     },
-    deleteNote: function(index) {
-      const note = this.user.notes[index];
-      console.log(note.id);
+    deleteNote: function(note, index) {
+      
       deleteNoteOnDB(note.id);
-      this.user.notes.splice(index, 1);
+      this.$store.getters.getSelectedDashboard.notes.splice(index, 1);
     },
     editNote: function() {
-      editNoteOnDB(this.noteId, this.form.title, this.form.text);
+      editNoteOnDB(
+        this.$store.getters.getSelectedDashboard.notes[this.noteIndex].id,
+        this.form.title,
+        this.form.text
+      );
 
-      this.user.notes[this.noteIndex] = {
+      this.$store.getters.getSelectedDashboard.notes[this.noteIndex] = {
         title: this.form.title,
         text: this.form.text,
       };
