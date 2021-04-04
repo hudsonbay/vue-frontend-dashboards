@@ -64,11 +64,21 @@
           ></b-input>
         </b-field>
         <div v-if="currentAction == `insert`">
-          <b-button type="is-success" @click="addNote">Insert</b-button>
+          <b-button
+            v-bind:disabled="inputIsEmpty"
+            type="is-success"
+            @click="addNote"
+            >Insert</b-button
+          >
           <b-button type="is-info" @click="clearFields">Clear fields</b-button>
         </div>
         <div v-if="currentAction == `edit`">
-          <b-button type="is-primary" @click="editNote">Edit</b-button>
+          <b-button
+            v-bind:disabled="inputIsEmpty"
+            type="is-primary"
+            @click="editNote"
+            >Edit</b-button
+          >
           <b-button type="is-info" @click="clearFields">Clear fields</b-button>
         </div>
       </div>
@@ -149,6 +159,11 @@ export default {
       this.form.title = "";
       this.form.text = "";
       this.currentAction = "insert";
+    },
+  },
+  computed: {
+    inputIsEmpty() {
+      return this.form.title.length == 0 || this.form.text.length == 0;
     },
   },
 };

@@ -2,6 +2,10 @@ import Vue from "vue";
 import Buefy from "buefy";
 import App from "./App.vue";
 
+// Form validation
+import Vuelidate from 'vuelidate'
+Vue.use(Vuelidate)
+
 /* vue-router & vuex store */
 import router from "./router";
 import store from "./store";

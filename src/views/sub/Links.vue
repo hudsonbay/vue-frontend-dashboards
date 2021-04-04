@@ -51,15 +51,9 @@
     </div>
     <div id="right">
       <div v-if="this.$store.getters.getSelectedDashboardID != 0">
-        <form @submit="checkForm"
-  novalidate="true">
+        <form>
 
-          <p v-if="errors.length">
-    <b>Please correct the following error(s):</b>
-    <ul>
-      <li v-for="error in errors" v-bind:key="error">{{ error }}</li>
-    </ul>
-  </p>
+
 
           <b-field label="Title">
           <b-input id="title" v-model="form.title"></b-input>
@@ -70,11 +64,11 @@
         </b-field>
 
         <div v-if="currentAction == `insert`">
-          <b-button type="is-success" @click="addLink">Insert</b-button>
+          <b-button v-bind:disabled="inputIsEmpty" type="is-success" @click="addLink">Insert</b-button>
           <b-button type="is-info" @click="clearFields">Clear fields</b-button>
         </div>
         <div v-if="currentAction == `edit`">
-          <b-button type="is-primary" @click="editLink">Edit</b-button>
+          <b-button v-bind:disabled="inputIsEmpty" type="is-primary" @click="editLink">Edit</b-button>
           <b-button type="is-info" @click="clearFields">Clear fields</b-button>
         </div>
         </form>
@@ -180,6 +174,11 @@ export default {
       this.form.title = "";
       this.form.url = "";
       this.currentAction = "insert";
+    },
+  },
+  computed: {
+    inputIsEmpty() {
+      return this.form.title.length == 0 || this.form.url.length == 0;
     },
   },
 };
