@@ -22,8 +22,6 @@
         </h1>
       </div>
 
-      <!-- {{ this.$store.getters.getSelectedDashboard.notes.length }}
-      {{ JSON.stringify(this.$store.getters.getSelectedDashboard.notes) }} -->
       <div v-else>
         <ul>
           <li
@@ -111,10 +109,6 @@ export default {
   },
   methods: {
     addNote() {
-      // this.$store.getters.getSelectedDashboard.notes.push({
-      //   title: this.form.title,
-      //   text: this.form.text,
-      // });
       insertNoteOnDB(
         this.$store.getters.getSelectedDashboardID,
         this.form.title,
@@ -140,7 +134,6 @@ export default {
         this.$store.getters.getSelectedDashboard.notes[index].id
       );
       deleteNoteOnDB(note.id);
-      // this.$store.getters.getSelectedDashboard.notes.splice(index, 1);
     },
     editNote: function () {
       editNoteOnDB(

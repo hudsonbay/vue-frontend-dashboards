@@ -127,10 +127,6 @@ export default {
       return !!pattern.test(str);
     },
     addLink() {
-      // this.$store.getters.getSelectedDashboard.links.push({
-      //   title: this.form.title,
-      //   url: this.form.url,
-      // });
       if (!this.validURL(this.form.url)) {
         console.log("url validity", this.validURL(this.form.url));
         this.form.url = "http://".concat(this.form.url);
@@ -152,7 +148,6 @@ export default {
     },
     deleteLink: function (link, index) {
       deleteLinkOnDB(link.id);
-      // this.$store.getters.getSelectedDashboard.links.splice(index, 1);
     },
     editLink: function () {
       editLinkOnDB(
