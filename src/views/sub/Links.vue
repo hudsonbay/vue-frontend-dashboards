@@ -1,7 +1,7 @@
 <template>
   <div id="wrapper">
     <div id="left">
-       <!-- If dashboards list is empty -->
+      <!-- If dashboards list is empty -->
       <div v-if="this.$store.state.user.dashboards.length == 0">
         <h1>You have no dashboards :(</h1>
         <h1>Add one and start organizing stuff</h1>
@@ -52,27 +52,37 @@
     <div id="right">
       <div v-if="this.$store.getters.getSelectedDashboardID != 0">
         <form>
-
-
-
           <b-field label="Title">
-          <b-input id="title" v-model="form.title"></b-input>
-        </b-field>
+            <b-input id="title" v-model="form.title"></b-input>
+          </b-field>
 
-        <b-field label="URL">
-          <b-input id="url" v-model="form.url"></b-input>
-        </b-field>
+          <b-field label="URL">
+            <b-input id="url" v-model="form.url"></b-input>
+          </b-field>
 
-        <div v-if="currentAction == `insert`">
-          <b-button v-bind:disabled="inputIsEmpty" type="is-success" @click="addLink">Insert</b-button>
-          <b-button type="is-info" @click="clearFields">Clear fields</b-button>
-        </div>
-        <div v-if="currentAction == `edit`">
-          <b-button v-bind:disabled="inputIsEmpty" type="is-primary" @click="editLink">Edit</b-button>
-          <b-button type="is-info" @click="clearFields">Clear fields</b-button>
-        </div>
+          <div v-if="currentAction == `insert`">
+            <b-button
+              v-bind:disabled="inputIsEmpty"
+              type="is-success"
+              @click="addLink"
+              >Insert</b-button
+            >
+            <b-button type="is-info" @click="clearFields"
+              >Clear fields</b-button
+            >
+          </div>
+          <div v-if="currentAction == `edit`">
+            <b-button
+              v-bind:disabled="inputIsEmpty"
+              type="is-primary"
+              @click="editLink"
+              >Edit</b-button
+            >
+            <b-button type="is-info" @click="clearFields"
+              >Clear fields</b-button
+            >
+          </div>
         </form>
-
       </div>
     </div>
   </div>
@@ -94,7 +104,6 @@ export default {
   data() {
     return {
       user: getLoggedUserInfo(),
-      errors: [],
       currentAction: "insert",
       linkId: 0,
       linkIndex: 0,
@@ -105,23 +114,6 @@ export default {
     };
   },
   methods: {
-    checkForm: function (e) {
-      if (this.form.title && this.form.url) {
-        return true;
-      }
-      this.errors = [];
-
-      if (!this.form.title) {
-        this.errors.push("Title required.");
-      }
-      if (!this.form.url) {
-        this.errors.push("URL required.");
-      } else if (!this.URL(this.form.url)) {
-        this.errors.push("Valid URL required.");
-      }
-
-      e.preventDefault();
-    },
     validURL: function (str) {
       var pattern = new RegExp(
         "^(https?:\\/\\/)?" + // protocol
@@ -139,6 +131,11 @@ export default {
       //   title: this.form.title,
       //   url: this.form.url,
       // });
+      if (!this.validURL(this.form.url)) {
+        console.log("url validity", this.validURL(this.form.url));
+        this.form.url = "http://".concat(this.form.url);
+      }
+
       insertURLOnDB(
         this.$store.getters.getSelectedDashboardID,
         this.form.title,
