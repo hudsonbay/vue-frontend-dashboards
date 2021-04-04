@@ -141,10 +141,10 @@ export default {
       return !!pattern.test(str);
     },
     addLink() {
-      this.$store.getters.getSelectedDashboard.links.push({
-        title: this.form.title,
-        url: this.form.url,
-      });
+      // this.$store.getters.getSelectedDashboard.links.push({
+      //   title: this.form.title,
+      //   url: this.form.url,
+      // });
       insertURLOnDB(
         this.$store.getters.getSelectedDashboardID,
         this.form.title,

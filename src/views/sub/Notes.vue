@@ -101,10 +101,10 @@ export default {
   },
   methods: {
     addNote() {
-      this.$store.getters.getSelectedDashboard.notes.push({
-        title: this.form.title,
-        text: this.form.text,
-      });
+      // this.$store.getters.getSelectedDashboard.notes.push({
+      //   title: this.form.title,
+      //   text: this.form.text,
+      // });
       insertNoteOnDB(
         this.$store.getters.getSelectedDashboardID,
         this.form.title,
@@ -129,7 +129,9 @@ export default {
         "this.$store.getters.getSelectedDashboard.notes[index].id",
         this.$store.getters.getSelectedDashboard.notes[index].id
       );
-      deleteNoteOnDB( this.$store.getters.getSelectedDashboard.notes[this.noteIndex].id);
+      deleteNoteOnDB(
+        this.$store.getters.getSelectedDashboard.notes[this.noteIndex].id
+      );
       this.$store.getters.getSelectedDashboard.notes.splice(index, 1);
     },
     editNote: function () {

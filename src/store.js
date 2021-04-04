@@ -59,6 +59,27 @@ export default new Vuex.Store({
           url: payload.url,
         });
     },
+    deleteNote(state, payload) {
+      const i = state.user.dashboards
+        .filter((d) => d.id == state.selectedDashboardID)[0]
+        .notes.map((item) => item.id)
+        .indexOf(payload.id);
+
+      state.user.dashboards
+        .filter((d) => d.id == state.selectedDashboardID)[0]
+        .notes.splice(i, 1);
+    },
+    deleteLink(state, payload) {
+      const i = state.user.dashboards
+        .filter((d) => d.id == state.selectedDashboardID)[0]
+        .links.map((item) => item.id)
+        .indexOf(payload.id);
+
+      state.user.dashboards
+        .filter((d) => d.id == state.selectedDashboardID)[0]
+        .links.splice(i, 1);
+    },
+
     setSelectedDashboard(state, payload) {
       state.selectedDashboardID = payload;
     },
