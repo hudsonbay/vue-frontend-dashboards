@@ -18,9 +18,6 @@ export function loginUser(email, password) {
         },
       });
 
-      console.log("response", res.data);
-      console.log("res", res);
-
       setAuthToken(res.data.data.token);
       await fetchLoggedUserInfo(res.data.data.id);
       resolve();
@@ -29,7 +26,6 @@ export function loginUser(email, password) {
       // reject(err);
       if (err.response && err.response.status === 401) {
         alert("Error during login");
-        console.log("err.response", err.response.data);
       } else {
         // Handle error however you want
         alert("handling error");

@@ -9,22 +9,20 @@
           <br />
           <br />
           <b-field label="Email">
-            <b-input type="email" name="email" v-model="form.email"></b-input>
+            <b-input type="email" name="email" v-model.trim="form.email"></b-input>
           </b-field>
 
           <b-field label="Password">
             <b-input
               type="password"
               name="password"
-              v-model="form.password"
+              v-model.trim="form.password"
             ></b-input>
           </b-field>
 
-          <b-button v-on:click="register" value="NEW USER" type="is-primary"
-            >Register</b-button
-          >
+          <b-button@click="register" value="NEW USER" type="is-primary">Register</b-button>
 
-          <a v-on:click="login"> or login if you have an account</a>
+          <a@click="login"> or login if you have an account</a>
         </form>
         <p v-if="showError" id="error">Email already exists</p>
       </div>

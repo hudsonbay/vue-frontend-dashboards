@@ -21,9 +21,6 @@ export function insertDashboardOnDB(user_id, title) {
         notes: [],
         links: [],
       });
-
-      console.log("number of dashboards", store.state.user.dashboards.length);
-      console.log(store.state.user.dashboards);
       resolve();
     } catch (err) {
       console.error("Caught an error during insertion:", err);

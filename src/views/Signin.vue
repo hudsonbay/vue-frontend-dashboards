@@ -16,19 +16,19 @@
             <b-input
               type="password"
               name="password"
-              v-model="form.password"
+              v-model.trim="form.password"
             ></b-input>
           </b-field>
 
           <b-button
             value="LOGIN"
-            v-on:click="login"
+           @click="login"
             class="submit-btn"
             type="is-success"
             >Login</b-button
           >
 
-          <a v-on:click="register"> or register instead</a>
+          <a@click="register"> or register instead</a>
         </form>
         <p v-if="showError" id="error">Email or Password is incorrect</p>
       </div>

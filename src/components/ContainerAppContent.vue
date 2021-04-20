@@ -125,16 +125,7 @@ export default {
       },
     },
     filterDashboard() {
-      console.log("selected dashboard id: ", this.selectedDashboard);
       this.$store.commit("setSelectedDashboard", this.selectedDashboard);
-      console.log(
-        "this.$store.getters.getSelectedDashboardID",
-        this.$store.getters.getSelectedDashboardID
-      );
-      console.log(
-        "this.$store.getters.getSelectedDashboard",
-        this.$store.getters.getSelectedDashboard
-      );
     },
   },
 };

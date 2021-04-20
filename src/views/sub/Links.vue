@@ -27,7 +27,7 @@
           <li
             v-for="(item, index) in this.$store.getters.getSelectedDashboard
               .links"
-            v-bind:key="item.id"
+            :key="item.id"
           >
             <a href="#">
               <b-button
@@ -53,11 +53,11 @@
       <div v-if="this.$store.getters.getSelectedDashboardID != 0">
         <form>
           <b-field label="Title">
-            <b-input id="title" v-model="form.title"></b-input>
+            <b-input id="title" v-model.trim="form.title"></b-input>
           </b-field>
 
           <b-field label="URL">
-            <b-input id="url" v-model="form.url"></b-input>
+            <b-input id="url" v-model.trim="form.url"></b-input>
           </b-field>
 
           <div v-if="currentAction == `insert`">
@@ -126,12 +126,8 @@ export default {
     },
     addLink() {
       if (!this.validURL(this.form.url)) {
-        console.log("url validity", this.validURL(this.form.url));
-        console.log("this.form.url before", this.form.url);
         this.form.url = "http://".concat(this.form.url);
       }
-
-      console.log("this.form.url after", this.form.url);
 
       insertURLOnDB(
         this.$store.getters.getSelectedDashboardID,
@@ -152,8 +148,6 @@ export default {
     },
     editLink: function () {
       if (!this.validURL(this.form.url)) {
-        console.log("url validity", this.validURL(this.form.url));
-        console.log("this.form.url before", this.form.url);
         this.form.url = "http://".concat(this.form.url);
       }
 

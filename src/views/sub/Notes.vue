@@ -27,7 +27,7 @@
           <li
             v-for="(note, index) in this.$store.getters.getSelectedDashboard
               .notes"
-            v-bind:key="note.id"
+            :key="note.id"
           >
             <a href="#">
               <b-button
@@ -58,7 +58,7 @@
             maxlength="200"
             id="text"
             type="textarea"
-            v-model="form.text"
+            v-model.trim="form.text"
           ></b-input>
         </b-field>
         <div v-if="currentAction == `insert`">
@@ -124,15 +124,6 @@ export default {
       this.currentAction = "edit";
     },
     deleteNote: function (note, index) {
-      console.log("note.id", note.id);
-      console.log(
-        "this.$store.getters.getSelectedDashboard.notes[index]",
-        this.$store.getters.getSelectedDashboard.notes[index]
-      );
-      console.log(
-        "this.$store.getters.getSelectedDashboard.notes[index].id",
-        this.$store.getters.getSelectedDashboard.notes[index].id
-      );
       deleteNoteOnDB(note.id);
     },
     editNote: function () {

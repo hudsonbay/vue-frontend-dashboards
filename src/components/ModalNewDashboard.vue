@@ -8,7 +8,7 @@
       <b-field label="Name">
         <b-input
           type="text"
-          v-model="dashboardName"
+          v-model.trim="dashboardName"
           :value="dashboardName"
           placeholder="Your dashboard name"
           required
@@ -42,7 +42,7 @@ export default {
     };
   },
   methods: {
-    newDashboard: function(dashboardName) {
+    newDashboard: function (dashboardName) {
       this.$emit("close");
       insertDashboardOnDB(this.user.id, dashboardName);
     },
