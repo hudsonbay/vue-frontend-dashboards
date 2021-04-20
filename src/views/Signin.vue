@@ -37,7 +37,6 @@
 </template>
 
 <script>
-// import { mapActions } from "vuex";
 import { loginUser } from "../utils/auth";
 
 export default {
@@ -53,8 +52,6 @@ export default {
     };
   },
   methods: {
-    // ...mapActions(["LogIn"]),
-
     async login() {
       try {
         await loginUser(this.form.email, this.form.password);

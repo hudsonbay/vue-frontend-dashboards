@@ -57,7 +57,6 @@ export function deleteNoteOnDB(note_id) {
       let res = await axios({
         url: `${axios.defaults.baseURL}/notes/${note_id}`,
         method: "DELETE",
-        // data: { note_id },
       });
 
       store.commit("deleteNote", {

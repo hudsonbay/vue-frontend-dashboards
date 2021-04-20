@@ -57,7 +57,6 @@ export function deleteLinkOnDB(link_id) {
       let res = await axios({
         url: `${axios.defaults.baseURL}/links/${link_id}`,
         method: "DELETE",
-        // data: { link_id },
       });
 
       store.commit("deleteLink", {
