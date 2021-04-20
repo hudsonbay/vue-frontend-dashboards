@@ -1,4 +1,4 @@
-# vue-frontend-notes-links
+# vue-frontend-dashboards
 
 https://user-dashboards-vue.vercel.app
 
