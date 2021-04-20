@@ -16,7 +16,8 @@ Vue.use(Buefy);
 import axios from "axios";
 
 axios.defaults.withCredentials = true; // because my routes are protected by Phoenix
-axios.defaults.baseURL = "http://localhost:4000/api"; // the Phoenix Framework default endpoint
+axios.defaults.baseURL =
+  "https://user-dashboard-elixir-phoenix.herokuapp.com/api"; // the Phoenix Framework default endpoint
 
 Vue.config.productionTip = false;
 
