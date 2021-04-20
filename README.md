@@ -1,5 +1,9 @@
 # vue-frontend-notes-links
 
+https://user-dashboards-vue.vercel.app
+
+The project uses this API https://github.com/hudsonbay/metaito_api
+
 ## Project setup
 
 ```

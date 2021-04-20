@@ -32,7 +32,7 @@
             <a href="#">
               <b-button
                 @click="populateLinkToEdit(item, index)"
-                icon-right="pencil"
+                icon-left="pencil"
               />
 
               <b-button
