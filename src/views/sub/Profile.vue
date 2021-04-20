@@ -12,6 +12,18 @@
           </div>
           <div class="profile-card-inf__txt">Dashboards</div>
         </div>
+        <div class="profile-card-inf__item">
+          <div class="profile-card-inf__title">
+            {{ totalOfNotes }}
+          </div>
+          <div class="profile-card-inf__txt">Notes</div>
+        </div>
+        <div class="profile-card-inf__item">
+          <div class="profile-card-inf__title">
+            {{ totalOfLinks }}
+          </div>
+          <div class="profile-card-inf__txt">Links</div>
+        </div>
       </div>
     </div>
   </div>
@@ -23,6 +35,20 @@
 export default {
   name: "Profile",
   components: {},
+  computed: {
+    totalOfNotes() {
+      return this.$store.state.user.dashboards.reduce(
+        (total, current) => (total = total + current.notes.length),
+        0
+      );
+    },
+    totalOfLinks() {
+      return this.$store.state.user.dashboards.reduce(
+        (total, current) => (total = total + current.links.length),
+        0
+      );
+    },
+  },
 };
 </script>
 
