@@ -4,7 +4,7 @@ export function registerUser(email, password) {
   return new Promise(async (resolve, reject) => {
     try {
       let res = await axios({
-        url: `${axios.defaults.baseURL}/api/users/register`,
+        url: `${axios.defaults.baseURL}/users/register`,
         method: "POST",
         data: {
           user: {

@@ -34,7 +34,7 @@ export function editNoteOnDB(note_id, title, text) {
   return new Promise(async (resolve, reject) => {
     try {
       let res = await axios({
-        url: `${axios.defaults.baseURL}/api/notes/${note_id}`,
+        url: `${axios.defaults.baseURL}/notes/${note_id}`,
         method: "PUT",
         data: {
           note: {
@@ -55,7 +55,7 @@ export function deleteNoteOnDB(note_id) {
   return new Promise(async (resolve, reject) => {
     try {
       let res = await axios({
-        url: `${axios.defaults.baseURL}/api/notes/${note_id}`,
+        url: `${axios.defaults.baseURL}/notes/${note_id}`,
         method: "DELETE",
         // data: { note_id },
       });

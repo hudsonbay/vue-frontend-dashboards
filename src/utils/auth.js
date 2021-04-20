@@ -10,7 +10,7 @@ export function loginUser(email, password) {
   return new Promise(async (resolve, reject) => {
     try {
       let res = await axios({
-        url: `${axios.defaults.baseURL}/api/users/login`,
+        url: `${axios.defaults.baseURL}/users/login`,
         method: "POST",
         data: {
           email: email,
@@ -68,7 +68,7 @@ export function fetchLoggedUserInfo(id) {
   return new Promise(async (resolve, reject) => {
     try {
       let res = await axios({
-        url: `${axios.defaults.baseURL}/api/users/${id}`,
+        url: `${axios.defaults.baseURL}/users/${id}`,
         method: "GET",
         data: {
           id: id,

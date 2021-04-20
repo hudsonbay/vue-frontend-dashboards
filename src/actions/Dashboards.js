@@ -5,7 +5,7 @@ export function insertDashboardOnDB(user_id, title) {
   return new Promise(async (resolve, reject) => {
     try {
       let res = await axios({
-        url: `${axios.defaults.baseURL}/api/dashboards`,
+        url: `${axios.defaults.baseURL}/dashboards`,
         method: "POST",
         data: {
           dashboard: {
@@ -36,7 +36,7 @@ export function editDashboardOnDB(link_id, title, url) {
   return new Promise(async (resolve, reject) => {
     try {
       let res = await axios({
-        url: `${axios.defaults.baseURL}/api/links/${link_id}`,
+        url: `${axios.defaults.baseURL}/links/${link_id}`,
         method: "PUT",
         data: {
           link: {
@@ -57,7 +57,7 @@ export function deleteDashboardOnDB(link_id) {
   return new Promise(async (resolve, reject) => {
     try {
       let res = await axios({
-        url: `${axios.defaults.baseURL}/api/links`,
+        url: `${axios.defaults.baseURL}/links`,
         method: "DELETE",
         data: { link_id },
       });
