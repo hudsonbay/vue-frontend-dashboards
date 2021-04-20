@@ -1,6 +1,5 @@
 import Vue from "vue";
 import Router from "vue-router";
-import store from "./store";
 import Index from "./views/Index.vue";
 import IndexHome from "./views/sub/IndexHome.vue";
 import Profile from "./views/sub/Profile.vue";

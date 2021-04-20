@@ -35,7 +35,7 @@ export default {
   props: {
     brandText: String,
     collapsed: Boolean,
-    isPinned: Boolean
+    isPinned: Boolean,
   },
   data() {
     return {};
@@ -44,8 +44,8 @@ export default {
   methods: {
     toggleIsPinned() {
       this.$store.dispatch("mainmenu/TOGGLE_IS_PINNED");
-    }
-  }
+    },
+  },
 };
 </script>
 

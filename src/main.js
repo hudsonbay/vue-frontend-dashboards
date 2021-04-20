@@ -22,18 +22,6 @@ import axios from "axios";
 axios.defaults.withCredentials = true; // because my routes are protected by Phoenix
 axios.defaults.baseURL = "http://localhost:4000/api"; // the Phoenix Framework default endpoint
 
-// For handling Expired Token (Forbidden Requests) and logouts
-// axios.interceptors.response.use(undefined, function(error) {
-//   if (error) {
-//     const originalRequest = error.config;
-//     if (error.response.status === 401 && !originalRequest._retry) {
-//       originalRequest._retry = true;
-//       store.dispatch("logout");
-//       return router.push("/signin");
-//     }
-//   }
-// });
-
 Vue.config.productionTip = false;
 
 new Vue({
