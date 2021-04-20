@@ -50,7 +50,7 @@
     <div id="right">
       <div v-if="this.$store.getters.getSelectedDashboardID != 0">
         <b-field label="Title">
-          <b-input v-model="form.title"></b-input>
+          <b-input v-model.trim="form.title"></b-input>
         </b-field>
 
         <b-field label="Text">

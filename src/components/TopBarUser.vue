@@ -5,14 +5,7 @@
     <!-- username, and or role of user -->
     <div class="text">
       <!-- <p class="lower">Moderator</p> -->
-      <span v-if="isLoggedIn()">
-        <p class="upper">{{ this.$store.state.user.email }}</p>
-        <a @click="logoutUser()">Logout</a>
-      </span>
-      <span v-else>
-        <router-link to="/signup">Register</router-link> |
-        <router-link to="/signin">Login</router-link>
-      </span>
+      <h3>jdhdfh</h3>
     </div>
 
     <!-- avatar part would hold -->

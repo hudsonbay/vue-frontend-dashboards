@@ -1,12 +1,11 @@
 import axios from "axios";
 import store from "../store";
-const REST_ENDPOINT = "http://localhost:4000/";
 
 export function insertNoteOnDB(dashboard_id, title, text) {
   return new Promise(async (resolve, reject) => {
     try {
       let res = await axios({
-        url: `${REST_ENDPOINT}api/notes`,
+        url: `${axios.defaults.baseURL}/notes`,
         method: "POST",
         data: {
           note: {
@@ -35,7 +34,7 @@ export function editNoteOnDB(note_id, title, text) {
   return new Promise(async (resolve, reject) => {
     try {
       let res = await axios({
-        url: `${REST_ENDPOINT}api/notes/${note_id}`,
+        url: `${axios.defaults.baseURL}/api/notes/${note_id}`,
         method: "PUT",
         data: {
           note: {
@@ -56,7 +55,7 @@ export function deleteNoteOnDB(note_id) {
   return new Promise(async (resolve, reject) => {
     try {
       let res = await axios({
-        url: `${REST_ENDPOINT}api/notes/${note_id}`,
+        url: `${axios.defaults.baseURL}/api/notes/${note_id}`,
         method: "DELETE",
         // data: { note_id },
       });

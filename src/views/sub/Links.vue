@@ -115,22 +115,23 @@ export default {
   },
   methods: {
     validURL: function (str) {
-      var pattern = new RegExp(
-        "^(https?:\\/\\/)?" + // protocol
-          "((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|" + // domain name
-          "((\\d{1,3}\\.){3}\\d{1,3}))" + // OR ip (v4) address
-          "(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*" + // port and path
-          "(\\?[;&a-z\\d%_.~+=-]*)?" + // query string
-          "(\\#[-a-z\\d_]*)?$",
-        "i"
-      ); // fragment locator
-      return !!pattern.test(str);
+      var expression = /(https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9]|www\.[a-zA-Z0-9])/gi;
+      var regex = new RegExp(expression);
+
+      if (str.match(regex)) {
+        return true;
+      } else {
+        return false;
+      }
     },
     addLink() {
       if (!this.validURL(this.form.url)) {
         console.log("url validity", this.validURL(this.form.url));
+        console.log("this.form.url before", this.form.url);
         this.form.url = "http://".concat(this.form.url);
       }
+
+      console.log("this.form.url after", this.form.url);
 
       insertURLOnDB(
         this.$store.getters.getSelectedDashboardID,
@@ -150,6 +151,12 @@ export default {
       deleteLinkOnDB(link.id);
     },
     editLink: function () {
+      if (!this.validURL(this.form.url)) {
+        console.log("url validity", this.validURL(this.form.url));
+        console.log("this.form.url before", this.form.url);
+        this.form.url = "http://".concat(this.form.url);
+      }
+
       editLinkOnDB(
         this.$store.getters.getSelectedDashboard.links[this.linkIndex].id,
         this.form.title,

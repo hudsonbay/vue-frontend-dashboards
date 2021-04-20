@@ -14,7 +14,7 @@
       />
 
       <!-- Slot : Darkmode toggle - TEMP -->
-      <b-field style="margin:0">
+      <b-field style="margin: 0">
         <b-switch
           v-model="isDarkmode"
           :rounded="false"
@@ -30,7 +30,7 @@
       />
 
       <b-select
-        style="marginLeft:8px"
+        style="marginleft: 8px"
         v-show="this.$store.state.user.dashboards.length != 0"
         placeholder="Select a dashboard"
         v-model="selectedDashboard"

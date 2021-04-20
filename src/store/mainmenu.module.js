@@ -13,7 +13,7 @@ const SET_BADGE_TEXT = "SET_BADGE_TEXT";
 export const mainmenu = {
   namespaced: true,
   state: {
-    brandText: "metaito",
+    brandText: "dashboards",
     isPinned: true,
     groups: config.groups,
     badges: config.badges,

@@ -1,12 +1,10 @@
 import axios from "axios";
 
-const REST_ENDPOINT = "http://localhost:4000/";
-
 export function registerUser(email, password) {
   return new Promise(async (resolve, reject) => {
     try {
       let res = await axios({
-        url: `${REST_ENDPOINT}api/users/register`,
+        url: `${axios.defaults.baseURL}/api/users/register`,
         method: "POST",
         data: {
           user: {
